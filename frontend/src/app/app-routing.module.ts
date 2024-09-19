@@ -2,18 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { UserListComponent } from './user-list/user-list.component';
-import { AuthGuard } from './guards/auth.guard'; // Si tienes un guard para protección de rutas
-
+import { UserFormComponent } from './user-list/user-form.component';
+import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
     component: UserListComponent,
-    canActivate: [AuthGuard] // Protege la ruta si es necesario
+    canActivate: [AuthGuard]
   },
-  // Agrega aquí otras rutas según tus necesidades
-  { path: '**', redirectTo: '/login' } // Redirige a login en caso de rutas no encontradas
+  {
+    path: 'user-form',
+    component: UserFormComponent,
+    canActivate: [AuthGuard] 
+  },
+  { path: '**', redirectTo: '/login' } 
 ];
 
 @NgModule({

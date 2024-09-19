@@ -1,21 +1,29 @@
-<mat-card>
-    <mat-card-header>
-      <mat-card-title>Usuarios</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <table mat-table [dataSource]="users" class="mat-elevation-z8">
-  
-        <!-- Columnas aquí -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Nombre </th>
-          <td mat-cell *matCellDef="let user"> {{user.name}} </td>
-        </ng-container>
-  
-        <!-- Más columnas según lo necesario -->
-  
-        <tr mat-header-row *matHeaderRowDef="['name']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['name']"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-  
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button (click)="editUser(element)">Edit</button>
+      <button mat-button (click)="deleteUser(element.id)">Delete</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<div class="auth-buttons">
+  <button *ngIf="!isAuthenticated" mat-raised-button color="primary" (click)="navigateToLogin()">Iniciar sesión</button>
+  <button *ngIf="isAuthenticated" mat-raised-button color="warn" (click)="onLogout()">Cerrar sesión</button>
+</div>
+
+<button mat-raised-button color="primary" (click)="openAddUserDialog()">Add User</button>

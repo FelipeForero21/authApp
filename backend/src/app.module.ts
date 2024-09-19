@@ -13,9 +13,9 @@ import { UsersModule } from './users/users.module';
       username: 'default',
       password: 'ivgaJX95bAyY',
       database: 'verceldb',
-      ssl: { rejectUnauthorized: false }, // Para habilitar SSL
+      ssl: { rejectUnauthorized: false },
       autoLoadEntities: true,
-      synchronize: true, // Usar solo en desarrollo
+      synchronize: true, 
     }),
     AuthModule,
     UsersModule,

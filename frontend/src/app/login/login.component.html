@@ -1,12 +1,13 @@
-<mat-card>
+<mat-card class="login-card">
   <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
+    <mat-card-title class="login-title">Login</mat-card-title>
+    <h2 class="credentials">Email: <strong>admin@admin.com</strong> | Password: <strong>admin</strong></h2>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Correo electrónico</mat-label>
-        <input matInput formControlName="email" type="email">
+        <input matInput formControlName="email" type="email" />
         <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
           El correo electrónico es requerido
         </mat-error>
@@ -14,13 +15,16 @@
           Correo electrónico no válido
         </mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Contraseña</mat-label>
-        <input matInput formControlName="password" type="password">
+        <input matInput formControlName="password" type="password" />
         <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
           La contraseña es requerida
         </mat-error>
       </mat-form-field>
+      <div *ngIf="loginError" class="error-message">
+        <mat-error>Credenciales incorrectas. Inténtalo de nuevo.</mat-error>
+      </div>
       <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>
     </form>
   </mat-card-content>

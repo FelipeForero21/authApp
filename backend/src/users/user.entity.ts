@@ -5,11 +5,10 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, nullable: false }) // No permite valores nulos
+  @Column({ unique: true, nullable: false }) 
   email: string;
 
-  @Column({ nullable: false }) // No permite valores nulos
+  @Column({ nullable: false }) 
   password: string;
 
-  // Otras columnas
 }

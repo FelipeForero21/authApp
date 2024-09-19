@@ -1,7 +1,10 @@
-import { Injectable } from '@nestjs/common';
+// src/users/users.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -16,28 +19,44 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise<User> {
-    return this.usersRepository.findOneBy({ id });
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async findByEmail(email: string): Promise<User> {
     return this.usersRepository.findOneBy({ email });
   }
 
-  async create(user: Partial<User>): Promise<User> {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const newUser = this.usersRepository.create({
-      ...user,
+      ...createUserDto,
       password: hashedPassword,
     });
     return this.usersRepository.save(newUser);
   }
 
-  async update(id: number, user: Partial<User>): Promise<User> {
-    await this.usersRepository.update(id, user);
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const existingUser = await this.usersRepository.findOneBy({ id });
+    if (!existingUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
+
+    await this.usersRepository.update(id, updateUserDto);
     return this.usersRepository.findOneBy({ id });
   }
 
   async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+    const result = await this.usersRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
   }
 }
