@@ -1,5 +1,5 @@
 {
-    "name": "corrales_oncredit",
+    "name": "auth app",
     "version": "1.0.0",
     "scripts": {
       "install:backend": "cd backend && npm install",
